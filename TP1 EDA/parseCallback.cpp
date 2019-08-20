@@ -36,9 +36,9 @@ typedef lista_t* pToLista_t[];	//arreglo de punteros a arreglos de punteros a st
 /*******************************************************************************
  * VARIABLES WITH GLOBAL SCOPE
  ******************************************************************************/
-#ifdef TESTING
+//#ifdef TESTING
 int keyState = INIT;		//estado de la FSM
-#endif
+//#endif
 
 /*******************************************************************************
  * FUNCTION PROTOTYPES FOR PRIVATE FUNCTIONS WITH FILE LEVEL SCOPE

@@ -22,7 +22,7 @@
 /*******************************************************************************
  * FUNCTION PROTOTYPES FOR PRIVATE FUNCTIONS WITH FILE LEVEL SCOPE
  ******************************************************************************/
-static void testCmdLine(const char* testCase[], int* correctos, int* incorrectos);
+static void testCmdLine(int argc_, char* argv_[], int* correctos, int* incorrectos);
 
  /*******************************************************************************
   *******************************************************************************
@@ -31,95 +31,65 @@ static void testCmdLine(const char* testCase[], int* correctos, int* incorrectos
   ******************************************************************************/
 int main(int argc, char* argv[]) {
 
+	/*
 	const char* testCase1[] = { "parse.exe", "--" };			//, 2=NARGS
 	const char* testCase2[] = { "parse.exe", "suma-"};
 	const char* testCase3[] = { "parse.exe", "- " };
 	const char* testCase4[] = { "parse.exe", "--" };
 	const char* testCase5[] = { "parse.exe","-suma", "-suma"} };
-
-	typedef char* argvTest[];
-
-	argvTest argvT1w[] = {"prueba.exe" , "--", "or"};
-	argvTest argvT2w[] = { "prueba.exe" , "-"};
-	argvTest argvT3w[] = { "prueba.exe" , };
-	argvTest argvT4w[] = { "prueba.exe" , ""};
-	argvTest argvT5w[] = { "prueba.exe" , };
-	argvTest argvT6w[] = { "prueba.exe" , };
-	argvTest argvT7w[] = { "prueba.exe" , };
-	argvTest argvT8w[] = { "prueba.exe" , };
-	argvTest argvT9w[] = { "prueba.exe" , };
-	argvTest argvT10w[] = { "prueba.exe" , };
-
-	argvTest argvT1r[] = { "prueba.exe" };
-/*
-	argvTest argvT1[] = { "prueba.exe" , };
-	argvTest argvT1[] = { "prueba.exe" , };
-	argvTest argvT1[] = { "prueba.exe" , };
-	argvTest argvT1[] = { "prueba.exe" , };
-	argvTest argvT1[] = { "prueba.exe" , };
-	argvTest argvT1[] = { "prueba.exe" , };
-	argvTest argvT1[] = { "prueba.exe" , };
-	argvTest argvT1[] = { "prueba.exe" , };
-	argvTest argvT1[] = { "prueba.exe" , };
-	argvTest argvT1[] = { "prueba.exe" , };
-	argvTest argvT1[] = { "prueba.exe" , };
-	argvTest argvT1[] = { "prueba.exe" , };
-	argvTest argvT1[] = { "prueba.exe" , };
-	argvTest argvT1[] = { "prueba.exe" , };
-	argvTest argvT1[] = { "prueba.exe" , };
-	argvTest argvT1[] = { "prueba.exe" , };
-	argvTest argvT1[] = { "prueba.exe" , };
-	argvTest argvT1[] = { "prueba.exe" , };
 	*/
+	typedef const char* argvTest[];
 
-	argvTest* allTests[NRO_DE_PRUEBAS];
+	//CASOS INCORRECTOS
+	argvTest argvT1w = {"prueba.exe" , "-"};	//no hay clave
+	argvTest argvT2w = { "prueba.exe" , "--"};	//clave sin valor
+	argvTest argvT3w = { "prueba.exe" , "-", "10"};	//no hay clave
+	argvTest argvT4w = { "prueba.exe" , "-opcion" };	//clave sin valor
+	argvTest argvT5w = { "prueba.exe" , "valor" };	//parametro q no existe en callback
+	argvTest argvT6w = { "prueba.exe" , "-sen", "2","-sen","2"};	//no permitido en callback
+	argvTest argvT7w = { "prueba.exe" , "-suma", "dos" };	//valor no permitido
+	argvTest argvT8w = { "prueba.exe" , "-resta", "-" };		//valor no permitido
+	argvTest argvT9w = { "prueba.exe" , "-producto", "1","-producto","1"};	//no permitido en callback
+	argvTest argvT10w = { "prueba.exe" , "16", "-division", "4"};	//"
+
+	//CASOS CORRECTOS
+	argvTest argvT1r = { "prueba.exe" , "-suma", "-12.3456", "-y", "-14.534", "redondeo3" };
+	argvTest argvT2r = { "prueba.exe" , "-cociente", "-345", "-y", "0.12" };
+	argvTest argvT3r = { "prueba.exe" , "-sen","360","-angulo","grados"};
+	argvTest argvT4r = { "prueba.exe" , "-ln" , "2.7182","-nota", "Esto debería ser 1"};
+	argvTest argvT5r = { "prueba.exe" , "ayuda"};
+	argvTest argvT6r = { "prueba.exe" , "-raiz", "121.11011","redondeo1"};
+	argvTest argvT7r = { "prueba.exe" , "-base", "12.45", "-exp","5"};
+	argvTest argvT8r = { "prueba.exe" , "-modulo", "-120.23455", "redondeo4"};
+	argvTest argvT9r = { "prueba.exe" , "-fact", "9.0", "-nota", "Esto es el factorial de 9"};
+	argvTest argvT10r = { "prueba.exe" };
 
 
-
-	pCallback_t pToCallback = parseCallback;
-	userData_t datos;
-
-	int check, correctos = 0, incorrectos = 0, i;
-
-
-	//Pruebas a parseLib(CmdLine).
-														//Comienza a pruebar uno por uno. 
-														//Notar que los casos en la matriz son tomados por nuestras convenciones como incorrectos
-														//y es por eso que en caso de que no se hallen errores se incremente "correctos".
+	int correctos = 0, incorrectos = 0;
 	
-	for(int i=0 ; i< ; i++)
+		testCmdLine(sizeof(argvT1w)/sizeof(char*), argvT1w, &correctos, &incorrectos);
+		testCmdLine(sizeof(argvT2w) / sizeof(char*), argvT2w, &correctos, &incorrectos);
+		testCmdLine(sizeof(argvT3w) / sizeof(char*), argvT3w, &correctos, &incorrectos);
+		testCmdLine(sizeof(argvT4w) / sizeof(char*), argvT4w, &correctos, &incorrectos);
+		testCmdLine(sizeof(argvT5w) / sizeof(char*), argvT5w, &correctos, &incorrectos);
+		testCmdLine(sizeof(argvT6w) / sizeof(char*), argvT6w, &correctos, &incorrectos);
+		testCmdLine(sizeof(argvT7w) / sizeof(char*), argvT7w, &correctos, &incorrectos);
+		testCmdLine(sizeof(argvT8w) / sizeof(char*), argvT8w, &correctos, &incorrectos);
+		testCmdLine(sizeof(argvT9w) / sizeof(char*), argvT9w, &correctos, &incorrectos);
+		testCmdLine(sizeof(argvT10w) / sizeof(char*), argvT10w, &correctos, &incorrectos);
 
-		testCmdLine(testCase1, &correctos, &incorrectos);
-		testCmdLine(testCase2, &correctos, &incorrectos);
-		testCmdLine(testCase3, &correctos, &incorrectos);
-		testCmdLine(testCase4, &correctos, &incorrectos);
-		testCmdLine(testCase5, &correctos, &incorrectos);
-
-	//Pruebas a parseCallback. 
-
-
-	/*check = parseCallback(Key,value , userdata)
-		if (check == 0)
-			incorrectos++;	//Si devuelve error, directamente ya sabemos que es error, no hace falta ver el resultado.
-		else
-		{
-			//¿¿Analisis de la respuesta obtenida??	Debo evaluar si es correcta o no, ¿tengo que hacer un user data para cada caso?.
-			correctos++;
-		}*/
-
-		//Resumen de pruebas
 
 	printf("Resumen de las pruebas realizadas: \n Correctos:%d  Incorrectos:%d", correctos, incorrectos);
 	return 0;
-}
+} 
 
-static void testCmdLine(const char * testCase [], int  int* correctos, int* incorrectos)
+static void testCmdLine(int argc_, char * argv_ [] ,  int* correctos, int* incorrectos)
 {
 	static int nroDePrueba;
 	pCallback_t pToCallback = parseCallback;
 	userData_t datosPrueba;
 	int check;
-	check = parseCmdLine(NARGS, testCase, pToCallback, &datosPrueba);
+	check = parseCmdLine(argc_, argv_, pToCallback, &datosPrueba);
 
 	printf("INICIO DE PRUEBA _%d_\n\n", nroDePrueba);
 	if (check == -1)
@@ -130,6 +100,7 @@ static void testCmdLine(const char * testCase [], int  int* correctos, int* inco
 	else
 	{
 		(*correctos)++;
+		calculadora(datosPrueba);
 		printf("PRUEBA CORRECTA\n");
 	}
 	printf("\nFIN DE PRUEBA _%d_\n", nroDePrueba++);

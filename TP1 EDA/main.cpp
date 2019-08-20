@@ -17,6 +17,7 @@
 									MAIN
  *******************************************************************************
  ******************************************************************************/
+/*
 int main(int argc, char* argv[]) {
 
 	pCallback_t pToCallback = parseCallback;
@@ -33,3 +34,4 @@ int main(int argc, char* argv[]) {
 	calculadora(datos);
 	return 0;
 }
+*/
